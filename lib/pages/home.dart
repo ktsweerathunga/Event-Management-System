@@ -79,12 +79,11 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.only(bottom: 5),
                     child: Material(
                       elevation: 5,
-                      borderRadius: BorderRadius.circular(20),
                       child: Container(
                         width: 130,
                         height: 130,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.white ),
+                        decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(20),),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -100,12 +99,11 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.only(bottom: 5),
                     child: Material(
                       elevation: 5,
-                      borderRadius: BorderRadius.circular(20),
                       child: Container(
                         width: 130,
                         height: 130,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.white ),
+                        decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(20)), 
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -126,7 +124,7 @@ class _HomeState extends State<Home> {
                         width: 130,
                         height: 130,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.white ),
+                        decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(20),),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -142,12 +140,11 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.only(bottom: 5),
                     child: Material(
                       elevation: 5,
-                      borderRadius: BorderRadius.circular(20),
                       child: Container(
                         width: 130,
                         height: 130,
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.white ),
+                        decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(20),),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -162,6 +159,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 20),
+
             Padding(
               padding: const EdgeInsets.only(right: 20),
               child: Row(
@@ -172,16 +170,36 @@ class _HomeState extends State<Home> {
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),),
+                  Padding(padding: EdgeInsets.only(right: 20),    // see all with some padding from right
+                    child: Text('See all' , style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),),
+                  )
                 ],
               ),
             ),
+
+            SizedBox(height: 20),
             Container(
-              
+              margin: EdgeInsets.only(right: 20),
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
               ),
-            )
+              child: Stack(
+                children: [
+                  Image.asset('assets/images/event.png', fit: BoxFit.cover, height: 200, width: MediaQuery.of(context).size.width, ),
+                  Container(
+                    child: Text('August 20, 2023' , style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  )
+                ]
+            ),),
           ],
         ),
       ),
