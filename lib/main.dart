@@ -1,4 +1,6 @@
+import 'package:event_management_system/components/widgets/bottum_nav.dart';
 import 'package:event_management_system/pages/home.dart';
+import 'package:event_management_system/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: SignUp(),
     );
   }
 }

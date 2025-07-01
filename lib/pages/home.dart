@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
             ),
             SizedBox(height: 20),
             Text('Hello , Sandinu' , style: TextStyle(
-                  color: Colors.black,
+                  color: const Color.fromARGB(255, 73, 41, 128),
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                 ),),
@@ -182,6 +182,7 @@ class _HomeState extends State<Home> {
             ),
 
             SizedBox(height: 20),
+
             Container(
               margin: EdgeInsets.only(right: 20),
               width: MediaQuery.of(context).size.width,
@@ -190,16 +191,68 @@ class _HomeState extends State<Home> {
               ),
               child: Stack(
                 children: [
-                  Image.asset('assets/images/event.png', fit: BoxFit.cover, height: 200, width: MediaQuery.of(context).size.width, ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'assets/images/event.png', fit: BoxFit.cover, height: 200, width: MediaQuery.of(context).size.width, ),
+                  ),
                   Container(
-                    child: Text('August 20, 2023' , style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),),
+                    margin: EdgeInsets.only(left: 20, top: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Text('August 20\n 2023' ,
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                    ),
                   )
                 ]
             ),),
+            SizedBox(height: 5), 
+            
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('BnS Music Festival ',
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 73, 41, 128),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                 Padding(
+                   padding: const EdgeInsets.only(right: 20),
+                   child: Text('Rs. 5000' ,
+                    textAlign: TextAlign.center, 
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 58, 47, 78),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.location_on_outlined, color: Colors.black,),
+                Text('Colombo, Sri Lanka' ,
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 73, 41, 128),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                
+              ],
+            ),
+           
           ],
         ),
       ),
