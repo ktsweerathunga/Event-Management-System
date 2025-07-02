@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "30605793324",
+    "project_id": "lkeventmanagementapp",
+    "storage_bucket": "lkeventmanagementapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30605793324:android:576d0db8b08ea44ea65989",
+        "android_client_info": {
+          "package_name": "com.example.event_management_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPpRU35w90BR3Lh0YCsgyH4rnHUjkhk7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
