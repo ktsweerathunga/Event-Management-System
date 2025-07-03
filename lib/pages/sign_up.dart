@@ -1,3 +1,4 @@
+import 'package:event_management_system/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -43,30 +44,37 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
             SizedBox(height: 45),
-            Container(
-              height: 60,
-              margin: EdgeInsets.only(left: 32, right: 32),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 98, 12, 210),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/google.png',
-                    height: 30,
-                    width: 30,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(width: 10),
-                  Text("Sign up with Google",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                // Call the sign-in method from AuthMethods
+                AuthMethods().SignInWithGoogle(context);
+                // AuthMethods().SignInWithGoogle(context);
+              },
+              child: Container(
+                height: 60,
+                margin: EdgeInsets.only(left: 32, right: 32),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 98, 12, 210),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/google.png',
+                      height: 30,
+                      width: 30,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    Text("Sign up with Google",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
           ],
