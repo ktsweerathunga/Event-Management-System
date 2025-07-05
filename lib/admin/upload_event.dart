@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:event_management_system/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -253,7 +254,7 @@ class _UploadEventState extends State<UploadEvent> {
             // ),
             // ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 String addId = randomAlphaNumeric(10);
                 // Here you can add the logic to upload the event details
                 // For example, you can save the event details to Firestore or any other database
@@ -265,6 +266,8 @@ class _UploadEventState extends State<UploadEvent> {
                 final UploadTask uploadTask = storageReference.putFile(selectedImage!);
                 //getting the url of the image that wea are uploading
                 var downloadUrl = storageReference.getDownloadURL();
+                final
+
                 Map<String, dynamic> uploadeventData = {
                   'Mame': nameController.text,
                   'Price': priceController.text,
@@ -272,6 +275,30 @@ class _UploadEventState extends State<UploadEvent> {
                   'Detail': detailController.text,
                   'ImageUrl': downloadUrl.toString(),
                 };
+
+                await DatabaseMethods().addEvent(uploadeventData, addId).then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Event Uploaded Successfully!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                  // Clear the input fields after successful upload
+                  nameController.clear();
+                  priceController.clear();
+                  detailController.clear();
+                  setState(() {
+                    selectedImage = null; // Reset the selected image
+                    _selectedEventType = null; // Reset the selected event type
+                  });
+                }).catchError((error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to upload event: $error'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                });
               },
               child: Center(
                 child: Container(
