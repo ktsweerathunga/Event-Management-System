@@ -266,7 +266,7 @@ class _UploadEventState extends State<UploadEvent> {
                 final UploadTask uploadTask = storageReference.putFile(selectedImage!);
                 //getting the url of the image that wea are uploading
                 var downloadUrl = storageReference.getDownloadURL();
-                final
+                final 
 
                 Map<String, dynamic> uploadeventData = {
                   'Mame': nameController.text,
