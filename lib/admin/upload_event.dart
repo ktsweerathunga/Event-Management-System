@@ -83,10 +83,17 @@ class _UploadEventState extends State<UploadEvent> {
             ),
             SizedBox(height: 20,),
             selectedImage != null
-            ? Image.file(
-              selectedImage! , 
-              height: 90 , 
-              width: 90,):
+            ? Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  selectedImage! , 
+                  height: 160 , 
+                  width: 160,
+                  fit: BoxFit.cover,),
+              ),
+            ):
+
             Center(
               child: GestureDetector(
                 onTap: (){
@@ -255,28 +262,28 @@ class _UploadEventState extends State<UploadEvent> {
             // ),
             GestureDetector(
               onTap: () async {
-                String addId = randomAlphaNumeric(10);
-                // Here you can add the logic to upload the event details
-                // For example, you can save the event details to Firestore or any other database
-                Reference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('BlogImages') // a folder that be created in Firebase Storage
-                    .child(addId + '.jpg');
+                // String addId = randomAlphaNumeric(10);
+                // // Here you can add the logic to upload the event details
+                // // For example, you can save the event details to Firestore or any other database
+                // Reference storageReference = FirebaseStorage.instance
+                //     .ref()
+                //     .child('BlogImages') // a folder that be created in Firebase Storage
+                //     .child(addId + '.jpg');
 
-                final UploadTask uploadTask = storageReference.putFile(selectedImage!);
-                //getting the url of the image that wea are uploading
-                var downloadUrl = storageReference.getDownloadURL();
-                
+                // final UploadTask uploadTask = storageReference.putFile(selectedImage!);
+                // //getting the url of the image that wea are uploading
+                // var downloadUrl = storageReference.getDownloadURL();
+                String id = randomAlphaNumeric(10);
 
                 Map<String, dynamic> uploadeventData = {
                   'Mame': nameController.text,
                   'Price': priceController.text,
                   'EventType': _selectedEventType,
                   'Detail': detailController.text,
-                  'ImageUrl': downloadUrl.toString(),
+                  'ImageUrl': '',
                 };
 
-                await DatabaseMethods().addEvent(uploadeventData, addId).then((value) {
+                await DatabaseMethods().addEvent(uploadeventData, id).then((value) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Event Uploaded Successfully!'),
