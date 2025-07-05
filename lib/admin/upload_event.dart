@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
 
 class UploadEvent extends StatefulWidget {
   const UploadEvent({super.key});
@@ -252,7 +254,24 @@ class _UploadEventState extends State<UploadEvent> {
             // ),
             GestureDetector(
               onTap: () {
-                
+                String addId = randomAlphaNumeric(10);
+                // Here you can add the logic to upload the event details
+                // For example, you can save the event details to Firestore or any other database
+                Reference storageReference = FirebaseStorage.instance
+                    .ref()
+                    .child('BlogImages') // a folder that be created in Firebase Storage
+                    .child(addId + '.jpg');
+
+                final UploadTask uploadTask = storageReference.putFile(selectedImage!);
+                //getting the url of the image that wea are uploading
+                var downloadUrl = storageReference.getDownloadURL();
+                Map<String, dynamic> uploadeventData = {
+                  'Mame': nameController.text,
+                  'Price': priceController.text,
+                  'EventType': _selectedEventType,
+                  'Detail': detailController.text,
+                  'ImageUrl': downloadUrl.toString(),
+                };
               },
               child: Center(
                 child: Container(
