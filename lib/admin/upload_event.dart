@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadEvent extends StatefulWidget {
   const UploadEvent({super.key});
@@ -8,6 +11,9 @@ class UploadEvent extends StatefulWidget {
 }
 
 class _UploadEventState extends State<UploadEvent> {
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController priceController = new TextEditingController();
+  TextEditingController detailController = new TextEditingController();
   final List<String> _eventTypes = [
     'Music Concert',
     'Food Festival',
@@ -15,6 +21,36 @@ class _UploadEventState extends State<UploadEvent> {
     'Festival',
   ];
   String? _selectedEventType;
+  final ImagePicker _imagePicker = ImagePicker();
+
+  File? selectedImage;
+
+  Future getImage() async {
+    var image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 600,
+      maxHeight: 600,
+    );
+    selectedImage = File(image!.path);
+    setState(() {
+      // Update the UI to reflect the selected image
+    });
+  }
+
+  // Future<void> _pickImage() async {
+  //   final XFile? image = await _imagePicker.pickImage(
+  //     source: ImageSource.gallery,
+  //     maxWidth: 600,
+  //     maxHeight: 600,
+  //   );
+  //   if (image != null) {
+  //     // Handle the selected image
+  //     print('Image selected: ${image.path}');
+  //   } else {
+  //     print('No image selected.');
+  //   }
+  // }  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,20 +79,30 @@ class _UploadEventState extends State<UploadEvent> {
               ],
             ),
             SizedBox(height: 20,),
+            selectedImage != null
+            ? Image.file(
+              selectedImage! , 
+              height: 90 , 
+              width: 90,):
             Center(
-              child: Container(
-                height: 90,
-                width:90,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2,
+              child: GestureDetector(
+                onTap: (){
+                  getImage();
+                },
+                child: Container(
+                  height: 90,
+                  width:90,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2,
+                    ),
                   ),
-                ),
-                child: Icon(
-                  Icons.add_a_photo,
-                  size: 50,
-                  color: Colors.grey,
+                  child: Icon(
+                    Icons.add_a_photo,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ),
@@ -76,6 +122,7 @@ class _UploadEventState extends State<UploadEvent> {
                 color: Colors.white, borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                controller: nameController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Enter Event Name',
@@ -98,6 +145,7 @@ class _UploadEventState extends State<UploadEvent> {
                 color: Colors.white, borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                controller: priceController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Enter Ticket Price',
@@ -171,6 +219,7 @@ class _UploadEventState extends State<UploadEvent> {
                 color: Colors.white, borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                controller: detailController,
                 maxLines: 6,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -201,21 +250,26 @@ class _UploadEventState extends State<UploadEvent> {
             //   ),
             // ),
             // ),
-            Center(
-              child: Container(
-                height: 50,
-                width: 200,
-                decoration: BoxDecoration(
-                  color:  Color.fromARGB(255, 98, 12, 210),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    'Upload',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                
+              },
+              child: Center(
+                child: Container(
+                  height: 50,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color:  Color.fromARGB(255, 98, 12, 210),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Upload',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
