@@ -290,7 +290,7 @@ class _UploadEventState extends State<UploadEvent> {
                       backgroundColor: Colors.green,
                     ),
                   );
-                  // Clear the input fields after successful upload
+                  // Clear the text fields and reset the selected image
                   nameController.clear();
                   priceController.clear();
                   detailController.clear();
