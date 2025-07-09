@@ -284,7 +284,7 @@ class _UploadEventState extends State<UploadEvent> {
                 };
 
                 await DatabaseMethods().addEvent(uploadeventData, id).then((value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar( 
                     SnackBar(
                       content: Text('Event Uploaded Successfully!'),
                       backgroundColor: Colors.green,
@@ -298,6 +298,7 @@ class _UploadEventState extends State<UploadEvent> {
                     selectedImage = null; // Reset the selected image
                     _selectedEventType = null; // Reset the selected event type
                   });
+                  // Navigator.pop(context); // Navigate back to the previous screen
                 }).catchError((error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
