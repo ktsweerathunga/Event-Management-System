@@ -308,6 +308,7 @@ class _UploadEventState extends State<UploadEvent> {
                   );
                 });
               },
+              // This is where you handle the upload logic
               child: Center(
                 child: Container(
                   height: 50,
