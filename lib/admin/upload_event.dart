@@ -54,6 +54,24 @@ class _UploadEventState extends State<UploadEvent> {
   //   }
   // }  
 
+
+  DateTime selectedData = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay(hour: 10 , minute: 00);
+
+  Future<void> _pickDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedData,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null && pickedDate != selectedData) {
+      setState(() {
+        selectedData = pickedDate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -262,19 +280,20 @@ class _UploadEventState extends State<UploadEvent> {
             // ),
             GestureDetector(
               onTap: () async {
-                String addId = randomAlphaNumeric(10);
-                // Here you can add the logic to upload the event details
-                // For example, you can save the event details to Firestore or any other database
-                Reference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('BlogImages') // a folder that be created in Firebase Storage
-                    .child(addId + '.jpg');
+                // String addId = randomAlphaNumeric(10);
+                // // Here you can add the logic to upload the event details
+                // // For example, you can save the event details to Firestore or any other database
+                // Reference storageReference = FirebaseStorage.instance
+                //     .ref()
+                //     .child('BlogImages') // a folder that be created in Firebase Storage
+                //     .child(addId + '.jpg');
 
-                final UploadTask uploadTask = storageReference.putFile(selectedImage!);
-                //getting the url of the image that wea are uploading
-                var downloadUrl = storageReference.getDownloadURL();
+                // final UploadTask uploadTask = storageReference.putFile(selectedImage!);
+                // //getting the url of the image that wea are uploading
+                // var downloadUrl = await storageReference.getDownloadURL(); 
+                // // var downloadUrl1 = await(await uploadTask).ref.getDownloadURL();
 
-                //* String id = randomAlphaNumeric(10);
+                String id = randomAlphaNumeric(10);
 
                 Map<String, dynamic> uploadeventData = {
                   'Mame': nameController.text,
