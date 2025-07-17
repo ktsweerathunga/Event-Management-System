@@ -22,4 +22,9 @@ class DatabaseMethods {
       print(e.toString());
     });
   } 
+
+  //give all the documents in the Events collection
+  Future <Stream<QuerySnapshot>> getEventList() async {
+    return await FirebaseFirestore.instance.collection("Event").snapshots();
+  }
 } 

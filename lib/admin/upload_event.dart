@@ -4,6 +4,7 @@ import 'package:event_management_system/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 
 class UploadEvent extends StatefulWidget {
@@ -17,6 +18,8 @@ class _UploadEventState extends State<UploadEvent> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   TextEditingController detailController = new TextEditingController();
+  TextEditingController locationController = new TextEditingController();
+
   final List<String> _eventTypes = [
     'Music Concert',
     'Food Festival',
@@ -58,6 +61,7 @@ class _UploadEventState extends State<UploadEvent> {
   DateTime selectedData = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay(hour: 10 , minute: 00);
 
+  // Function to pick date
   Future<void> _pickDate() async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -68,6 +72,28 @@ class _UploadEventState extends State<UploadEvent> {
     if (pickedDate != null && pickedDate != selectedData) {
       setState(() {
         selectedData = pickedDate;
+      });
+    }
+  }
+
+  String formatTimeDay(TimeOfDay time) {
+    // Format the TimeOfDay to a string in HH:mm format
+    // This function assumes that the time is in 24-hour format
+    // You can adjust the formatting as needed
+    // For example, you can use DateFormat from intl package for more complex formatting
+    final now = DateTime.now();
+    final dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+  }
+
+  Future <void> _pickTime() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (pickedTime != null && pickedTime != selectedTime) {
+      setState(() {
+        selectedTime = pickedTime;
       });
     }
   }
@@ -181,6 +207,29 @@ class _UploadEventState extends State<UploadEvent> {
               ),
             ),
             SizedBox(height: 30,),
+            Text('Location',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            SizedBox(height: 10,),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextField(
+                controller: locationController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter Event Location',
+                ),
+              ),
+            ),
+            SizedBox(height: 20,),
             Text('Select Event Category',
                   style: TextStyle(
                     color: Colors.black,
@@ -231,6 +280,36 @@ class _UploadEventState extends State<UploadEvent> {
                 ),
               ),
             ),
+            SizedBox(height: 20),
+            Row(children: [
+              GestureDetector(
+                onTap: () {
+                  _pickDate();
+                },
+                child: Icon(Icons.calendar_month_rounded , color: Colors.blueGrey,size: 20,)),
+              SizedBox(width: 10,),
+              Text(DateFormat('dd/MM/yyyy').format(selectedData!),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              SizedBox(width: 20,),
+              GestureDetector(
+                onTap: () {
+                  _pickTime();
+                },
+                child: Icon(Icons.alarm , color: Colors.blueGrey,size: 20,)),
+              SizedBox(width: 10,),
+              Text(formatTimeDay(selectedTime!),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ],),
             SizedBox(height: 30,),
             Text('Event Detail',
                   style: TextStyle(
@@ -301,6 +380,9 @@ class _UploadEventState extends State<UploadEvent> {
                   'EventType': _selectedEventType,
                   'Detail': detailController.text,
                   'ImageUrl': '',
+                  'Date': DateFormat('dd/MM/yyyy').format(selectedData),
+                  'time': formatTimeDay(selectedTime),
+                  'location': locationController.text,
                 };
 
                 await DatabaseMethods().addEvent(uploadeventData, id).then((value) {

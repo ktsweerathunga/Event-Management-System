@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_management_system/services/database.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -8,6 +10,142 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  Stream? eventStream;
+
+
+  //so user don't need to sign up again and again
+  //this function will be called when the home page is loaded
+  ontheway() async {
+    eventStream = await DatabaseMethods().getEventList();
+    setState(() {});
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    ontheway();
+  }
+
+  // Widget allEvents() {
+  //   return StreamBuilder(stream: eventStream, builder: (context, AsyncSnapshot snapshot) {
+  //     if (snapshot.hasData) {
+  //       return ListView.builder(
+  //         itemCount: snapshot.data?.length,
+  //         itemBuilder: (context, index) {
+  //           var event = snapshot.data[index];
+  //           return ListTile(
+  //             title: Text(event['name']),
+  //             subtitle: Text(event['date']),
+  //             trailing: Text('Rs. ${event['price']}'),
+  //             onTap: () {
+  //               // Navigate to event details
+  //             },
+  //           );
+  //         },
+  //       );
+  //     } else {
+  //       return Center(child: CircularProgressIndicator());
+  //     }
+  //   });
+  // }
+
+  Widget allEVENTS() {
+    return StreamBuilder(stream: eventStream, builder: (context, AsyncSnapshot snapshot) {
+      return snapshot.hasData
+          ? ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot ds = snapshot.data.docs[index];
+
+                String inputDate= ds['Date']; // Example date, replace with actual date from ds if needed
+                DateTime parsedDate = DateTime.parse(inputDate);
+                String formattedDate = "${parsedDate.day}/${parsedDate.month}/${parsedDate.year}";
+
+                return Column(
+                  children: [
+                    Container(
+                                  margin: EdgeInsets.only(right: 20),
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  ),
+                                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'assets/images/event.png', fit: BoxFit.cover, height: 200, width: MediaQuery.of(context).size.width, ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 20, top: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Text(ds['date'] ,
+                          textAlign: TextAlign.center, 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                        ),
+                      )
+                    ]
+                                ),
+                                ),
+                  
+            SizedBox(height: 5), 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(ds['name'] ,
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 73, 41, 128),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                 Padding(
+                   padding: const EdgeInsets.only(right: 20),
+                   child: Text(ds['price'] ,
+                    textAlign: TextAlign.center, 
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 58, 47, 78),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                 ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.location_on_outlined, color: Colors.black,),
+                Text(ds['location'] ,
+                      textAlign: TextAlign.center, 
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 73, 41, 128),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+              ],
+            ),
+                ],
+            );
+              },
+            )
+          : Center(child: CircularProgressIndicator());
+    });
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,75 +321,10 @@ class _HomeState extends State<Home> {
 
             SizedBox(height: 20),
 
-            Container(
-              margin: EdgeInsets.only(right: 20),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-              color: Colors.white,
-              ),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      'assets/images/event.png', fit: BoxFit.cover, height: 200, width: MediaQuery.of(context).size.width, ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, top: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Center(
-                      child: Text('August 20\n 2023' ,
-                      textAlign: TextAlign.center, 
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    ),
-                  )
-                ]
-            ),),
-            SizedBox(height: 5), 
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('BnS Music Festival ',
-                      textAlign: TextAlign.center, 
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 73, 41, 128),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                 Padding(
-                   padding: const EdgeInsets.only(right: 20),
-                   child: Text('Rs. 5000' ,
-                    textAlign: TextAlign.center, 
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 58, 47, 78),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),),
-                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.location_on_outlined, color: Colors.black,),
-                Text('Colombo, Sri Lanka' ,
-                      textAlign: TextAlign.center, 
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 73, 41, 128),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                
-              ],
-            ),
+            allEvents()
+            // Expanded(
+            //   child: allEVENTS(), // Displaying the events
+            // ),              
            
           ],
         ),
